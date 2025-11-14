@@ -32,7 +32,7 @@ class Interpreter {
                         new PrintStmt(new VarExp("v"))
                 ));
         PrgState prg1 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex1);
-        IRepository repo1 = new Repository(prg1, "logFile1.txt");
+        IRepository repo1 = new Repository(prg1, "logs/logFile1.txt");
         Controller ctr1 = new Controller(repo1);
 
         IExp two = new ValueExp(new IntValue(2));
@@ -60,7 +60,7 @@ class Interpreter {
                 )
         );
         PrgState prg2 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex2);
-        IRepository repo2 = new Repository(prg2,"logFile2.txt");
+        IRepository repo2 = new Repository(prg2,"logs/logFile2.txt");
         Controller ctr2 = new Controller(repo2);
 
         IStmt ex3 = new CompStmt(
@@ -81,11 +81,11 @@ class Interpreter {
                 )
         );
         PrgState prg3 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex3);
-        IRepository repo3 = new Repository(prg3, "logFile3.txt");
+        IRepository repo3 = new Repository(prg3, "logs/logFile3.txt");
         Controller ctr3 = new Controller(repo3);
 
         IStmt ex4 = new CompStmt(new VarDeclStmt("varf", new StringType()), new CompStmt(
-                new AssignStmt("varf", new ValueExp(new StringValue("test.in"))), new CompStmt(
+                new AssignStmt("varf", new ValueExp(new StringValue("input/test.in"))), new CompStmt(
                 new openRFile(new VarExp("varf")), new CompStmt(
                 new VarDeclStmt("varc", new IntType()), new CompStmt(
                 new readFile(new VarExp("varf"), "varc"), new CompStmt(
@@ -94,7 +94,7 @@ class Interpreter {
                 new PrintStmt(new VarExp("varc")), new closeRFile(new VarExp("varf"))))))))));
 
         PrgState prg4 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), ex4);
-        IRepository repo4 = new Repository(prg4, "logFile4.txt");
+        IRepository repo4 = new Repository(prg4, "logs/logFile4.txt");
         Controller ctr4 = new Controller(repo4);
 
         TextMenu menu = new TextMenu();
