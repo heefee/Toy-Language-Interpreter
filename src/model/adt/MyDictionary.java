@@ -3,11 +3,10 @@ package model.adt;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
-import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyDictionary<K,V> implements MyIDictionary <K,V>{
+public class MyDictionary<K,V> implements IMyDictionary<K,V> {
     private Map<K, V> dict;
 
     public MyDictionary(){
@@ -37,8 +36,9 @@ public class MyDictionary<K,V> implements MyIDictionary <K,V>{
     public void remove(K id) {
         dict.remove(id);
     }
+
     @Override
-    public Map<StringValue, BufferedReader> getContent(){
-        return (Map<StringValue, BufferedReader>) dict;
+    public Map<K, V> getContent(){
+        return (Map<K, V>) dict;
     }
 }

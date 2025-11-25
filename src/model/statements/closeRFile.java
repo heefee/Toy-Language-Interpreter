@@ -2,7 +2,7 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
 import model.expressions.IExp;
 import model.types.StringType;
 import model.values.IValue;
@@ -20,13 +20,13 @@ public class closeRFile implements IStmt{
 
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        IValue value = exp.eval(state.getSymTable());
+        IValue value = exp.eval(state.getSymTable(),state.getHeap());
         if (!value.getType().equals(new StringType())) {
             throw new MyException(String.format("Close Read File Error: %s is not of type string.", exp));
         }
 
         StringValue fileName = (StringValue) value;
-        MyIDictionary<StringValue, BufferedReader> fileTable = state.getFiletable();
+        IMyDictionary<StringValue, BufferedReader> fileTable = state.getFiletable();
         if (!fileTable.isDefined(fileName)){
             throw new MyException(String.format("Close Read File Error: Variable %s was not declared before.", value));
         }
@@ -46,5 +46,10 @@ public class closeRFile implements IStmt{
     @Override
     public IStmt deepCopy() {
         return new closeRFile(exp.deepCopy());
+    }
+
+    @Override
+    public String toString(){
+        return "closeRFile " + exp.toString() + ")";
     }
 }

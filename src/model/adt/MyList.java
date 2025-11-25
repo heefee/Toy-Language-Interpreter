@@ -3,7 +3,7 @@ package model.adt;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyList<V> implements MyIList<V>{
+public class MyList<V> implements IMyList<V> {
     private List<V> list;
 
     public MyList(){

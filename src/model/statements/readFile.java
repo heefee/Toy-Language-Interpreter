@@ -2,8 +2,7 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyDictionary;
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
 import model.expressions.IExp;
 import model.types.IntType;
 import model.types.StringType;
@@ -12,8 +11,6 @@ import model.values.IntValue;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 public class readFile implements IStmt{
@@ -27,8 +24,8 @@ public class readFile implements IStmt{
 
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        MyIDictionary<String, IValue> symbolTable = state.getSymTable();
-        MyIDictionary<StringValue, BufferedReader> fileTable = state.getFiletable();
+        IMyDictionary<String, IValue> symbolTable = state.getSymTable();
+        IMyDictionary<StringValue, BufferedReader> fileTable = state.getFiletable();
 
         if (!symbolTable.isDefined(varName)) {
             throw new MyException(String.format("Read File Error: Variable %s was not declared before.", varName));
@@ -39,7 +36,7 @@ public class readFile implements IStmt{
             throw new MyException(String.format("Read File Error: %s is not of type integer.", value));
         }
 
-        value = exp.eval(symbolTable);
+        value = exp.eval(symbolTable, state.getHeap());
         if (!value.getType().equals(new StringType())) {
             throw new MyException(String.format("Read File Error: %s is not of type string.", value));
         }
@@ -67,5 +64,10 @@ public class readFile implements IStmt{
     @Override
     public IStmt deepCopy(){
         return new readFile(this.exp.deepCopy(),this.varName);
+    }
+
+    @Override
+    public String toString(){
+        return "readFile " + varName + ", " + exp.toString() + ")";
     }
 }

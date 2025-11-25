@@ -2,7 +2,6 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIDictionary;
 import model.expressions.IExp;
 import model.types.StringType;
 import model.values.IValue;
@@ -21,7 +20,7 @@ public class openRFile implements IStmt{
 
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        IValue value = exp.eval(state.getSymTable());
+        IValue value = exp.eval(state.getSymTable(),state.getHeap());
         if(!value.getType().equals(new StringType()))
             throw new MyException("The filename must be a string");
 
@@ -40,5 +39,10 @@ public class openRFile implements IStmt{
     @Override
     public IStmt deepCopy() {
         return new openRFile(this.exp.deepCopy());
+    }
+
+    @Override
+    public String toString(){
+        return "openRFile " + exp.toString() + ")";
     }
 }

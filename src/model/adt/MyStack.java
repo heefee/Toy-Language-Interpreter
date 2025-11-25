@@ -1,7 +1,7 @@
 package model.adt;
 import java.util.Stack;
 
-public class MyStack <T> implements MyIStack <T>{
+public class MyStack <T> implements IMyStack<T> {
     private Stack<T> tail;
     public MyStack(){
         this.tail = new Stack<>();

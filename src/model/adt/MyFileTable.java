@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyFileTable<K,V> implements MyIDictionary<K,V>{
+public class MyFileTable<K,V> implements IMyDictionary<K,V> {
     private Map<K, V> fileTable;
 
 
@@ -39,7 +39,7 @@ public class MyFileTable<K,V> implements MyIDictionary<K,V>{
     }
 
     @Override
-    public Map<StringValue,BufferedReader> getContent(){
-        return (Map<StringValue, BufferedReader>) fileTable;
+    public Map<K,V> getContent(){
+        return (Map<K, V>) fileTable;
     }
 }

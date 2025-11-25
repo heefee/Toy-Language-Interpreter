@@ -1,6 +1,6 @@
 package model.adt;
 
-public interface MyIStack<T>{
+public interface IMyStack<T>{
     void push(T elem);
     T pop();
     boolean isEmpty();

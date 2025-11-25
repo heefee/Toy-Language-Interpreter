@@ -1,6 +1,7 @@
 package model.expressions;
 
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
+import model.adt.IMyHeap;
 import model.values.IValue;
 
 public class ValueExp implements IExp{
@@ -10,7 +11,7 @@ public class ValueExp implements IExp{
     }
 
     @Override
-    public IValue eval (MyIDictionary<String,IValue> dict){
+    public IValue eval (IMyDictionary<String,IValue> dict, IMyHeap<Integer,IValue> heap){
         return value;
     }
 

@@ -1,5 +1,5 @@
 package model.adt;
 
-public interface MyIList<V>{
+public interface IMyList<V>{
     void add(V value);
 }

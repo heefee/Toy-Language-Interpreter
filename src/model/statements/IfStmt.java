@@ -2,7 +2,7 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
 import model.expressions.IExp;
 import model.types.BoolType;
 import model.values.BoolValue;
@@ -26,9 +26,9 @@ public class IfStmt implements IStmt{
 
     @Override
     public PrgState execute (PrgState state) throws MyException{
-        MyIDictionary <String, IValue> dict = state.getSymTable();
-        if(exp.eval(dict).getType() instanceof BoolType){
-            BoolValue bv = (BoolValue) exp.eval(dict);
+        IMyDictionary<String, IValue> dict = state.getSymTable();
+        if(exp.eval(dict, state.getHeap()).getType() instanceof BoolType){
+            BoolValue bv = (BoolValue) exp.eval(dict,state.getHeap());
             if(bv.getValue())
                 state.getExeStack().push(thenS);
             else

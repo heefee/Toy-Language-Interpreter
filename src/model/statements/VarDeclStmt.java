@@ -2,7 +2,7 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
 import model.types.BoolType;
 import model.types.IType;
 import model.types.IntType;
@@ -32,17 +32,9 @@ public class VarDeclStmt implements IStmt{
 
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        MyIDictionary<String, IValue> symTable = state.getSymTable();
-        if(!symTable.isDefined(this.id)) {
-            if (this.type.equals(new IntType())) {
-                symTable.put(this.id, new IntValue(0));
-            }
-            else if (this.type.equals(new BoolType())){
-                symTable.put(this.id, new BoolValue(false));
-            }
-            else{
-                symTable.put(this.id, new StringValue(""));
-            }
+        IMyDictionary<String, IValue> symTable = state.getSymTable();
+        if(!symTable.isDefined(id)) {
+            symTable.put(id,type.defaultValue());
         }
         else {
             throw new MyException("This variable is already defined");

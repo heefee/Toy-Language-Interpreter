@@ -1,7 +1,8 @@
 package model.expressions;
 
 import exceptions.MyException;
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
+import model.adt.IMyHeap;
 import model.types.IntType;
 import model.values.IValue;
 import model.values.IntValue;
@@ -18,11 +19,11 @@ public class ArithExp implements IExp{
     }
 
     @Override
-    public IValue eval(MyIDictionary<String, IValue> dict) throws MyException{
+    public IValue eval(IMyDictionary<String, IValue> dict, IMyHeap<Integer,IValue> heap) throws MyException{
         IValue v1,v2;
-        v1 = e1.eval(dict);
+        v1 = e1.eval(dict,heap);
         if(v1.getType().equals(new IntType())){
-            v2 = e2.eval(dict);
+            v2 = e2.eval(dict,heap);
             if(v2.getType().equals(new IntType())){
                 IntValue i1 = (IntValue) v1;
                 IntValue i2 = (IntValue) v2;
@@ -44,4 +45,10 @@ public class ArithExp implements IExp{
     public IExp deepCopy(){
         return new ArithExp(e1.deepCopy(),e2.deepCopy(),op);
     }
+
+    @Override
+    public String toString(){
+        return "ArithExp(" + e1 + op + e2 + ")";
+    }
+
 }

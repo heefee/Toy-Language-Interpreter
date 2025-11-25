@@ -2,9 +2,7 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIDictionary;
-import model.adt.MyIList;
-import model.adt.MyIStack;
+import model.adt.IMyList;
 import model.expressions.IExp;
 import model.values.IValue;
 
@@ -18,10 +16,10 @@ public class PrintStmt implements IStmt{
     }
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        print(exp.eval(state.getSymTable()));
+        print(exp.eval(state.getSymTable(), state.getHeap()));
         print("\n\n");
-        MyIList <IValue> out = state.getOut();
-        out.add(exp.eval(state.getSymTable()));
+        IMyList<IValue> out = state.getOut();
+        out.add(exp.eval(state.getSymTable(),state.getHeap()));
         return state;
     }
 

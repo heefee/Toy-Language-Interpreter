@@ -2,13 +2,10 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIDictionary;
-import model.adt.MyIStack;
+import model.adt.IMyDictionary;
 import model.expressions.IExp;
 import model.types.IType;
 import model.values.IValue;
-
-import java.lang.reflect.Type;
 
 public class AssignStmt implements IStmt{
     private String id;
@@ -26,11 +23,11 @@ public class AssignStmt implements IStmt{
 
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        MyIDictionary<String, IValue> symTable = state.getSymTable();
+        IMyDictionary<String, IValue> symTable = state.getSymTable();
         if(!symTable.isDefined(this.id)) {
             throw new MyException("Assignment error: variable '" + this.id + "' was not declared");
         }
-        IValue value = this.exp.eval(symTable);
+        IValue value = this.exp.eval(symTable,state.getHeap());
         IValue oldValue = symTable.getValue(this.id);
         IType typeId = oldValue.getType();
         if(!value.getType().equals(typeId)) {

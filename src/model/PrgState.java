@@ -6,52 +6,57 @@ import model.values.IValue;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
-import java.sql.Struct;
 
 public class PrgState {
-    private MyIStack<IStmt> exeStack;
-    private MyIDictionary<String, IValue> symTable;
-    private MyIList<IValue> out;
+    private IMyStack<IStmt> exeStack;
+    private IMyDictionary<String, IValue> symTable;
+    private IMyList<IValue> out;
 
-    private MyIDictionary<StringValue, BufferedReader> filetable;
+    private IMyDictionary<StringValue, BufferedReader> filetable;
+    private IMyHeap heap;
 
     private IStmt originalProgram;
 
-    public PrgState(MyIStack<IStmt> stk, MyIDictionary<String, IValue> symtbl,MyIList<IValue> ot, IStmt prg){
+    public PrgState(IMyStack<IStmt> stk, IMyDictionary<String, IValue> symtbl, IMyList<IValue> ot,IMyDictionary<StringValue, BufferedReader> filetable, IMyHeap heap, IStmt prg){
         this.exeStack = stk;
         this.out = ot;
         this.symTable = symtbl;
         this.originalProgram = prg.deepCopy();
         stk.push(prg);
-        this.filetable = new MyFileTable<>();
+        this.filetable = filetable;
+        this.heap = heap;
     }
 
 
-    public MyIDictionary<StringValue,BufferedReader> getFiletable(){
+    public IMyDictionary<StringValue,BufferedReader> getFiletable(){
         return this.filetable;
     }
 
-    public void setFiletable(MyIDictionary<StringValue,BufferedReader> filetable1){
+    public void setFiletable(IMyDictionary<StringValue,BufferedReader> filetable1){
         this.filetable = filetable1;
     }
 
-    public MyIStack<IStmt> getExeStack()
+    public IMyStack<IStmt> getExeStack()
     {
         return exeStack;
     }
 
-    public MyIDictionary<String, IValue>  getSymTable()
+    public IMyDictionary<String, IValue> getSymTable()
     {
         return symTable;
     }
 
-    public MyIList<IValue> getOut()
+    public IMyList<IValue> getOut()
     {
         return out;
     }
 
+    public IMyHeap getHeap(){
+        return heap;
+    }
+
     @Override
     public String toString() {
-        return "ExeStack: " + exeStack + "\n" + "SymTable: " + symTable + "\n"+"Out: " + out + "\n"+"FileTable: " + filetable.toString()+"\n";
+        return "ExeStack: " + exeStack + "\n" + "SymTable: " + symTable + "\n"+"Out: " + out + "\n"+"FileTable: " + filetable.toString()+"\n" +"Heap: " + heap.toString() + "\n";
     }
 }

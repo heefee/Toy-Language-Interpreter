@@ -2,7 +2,7 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
-import model.adt.MyIStack;
+import model.adt.IMyStack;
 
 public class CompStmt implements IStmt{
     private IStmt first;
@@ -20,7 +20,7 @@ public class CompStmt implements IStmt{
 
     @Override
     public PrgState execute(PrgState state) throws MyException{
-        MyIStack<IStmt> stk = state.getExeStack();
+        IMyStack<IStmt> stk = state.getExeStack();
         stk.push(second);
         stk.push(first);
         return state;

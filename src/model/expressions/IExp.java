@@ -1,10 +1,10 @@
 package model.expressions;
 
-import model.PrgState;
-import model.adt.MyIDictionary;
+import model.adt.IMyDictionary;
+import model.adt.IMyHeap;
 import model.values.IValue;
 
 public interface IExp {
-    IValue eval (MyIDictionary<String, IValue> dict);
+    IValue eval (IMyDictionary<String, IValue> dict, IMyHeap<Integer,IValue> heap);
     IExp deepCopy();
 }

@@ -1,13 +1,10 @@
 package repository;
 
-import exceptions.MyException;
 import model.PrgState;
-import model.statements.PrintStmt;
 
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;
-import model.adt.MyFileTable;
 
 public class Repository implements IRepository {
     private final List<PrgState> prgStates;
