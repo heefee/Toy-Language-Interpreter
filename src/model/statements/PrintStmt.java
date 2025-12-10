@@ -20,7 +20,7 @@ public class PrintStmt implements IStmt{
         print("\n\n");
         IMyList<IValue> out = state.getOut();
         out.add(exp.eval(state.getSymTable(),state.getHeap()));
-        return state;
+        return null;
     }
 
     @Override

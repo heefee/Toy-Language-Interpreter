@@ -42,4 +42,14 @@ public class MyFileTable<K,V> implements IMyDictionary<K,V> {
     public Map<K,V> getContent(){
         return (Map<K, V>) fileTable;
     }
+
+    @Override
+    public IMyDictionary<K,V> deepCopy() {
+        IMyDictionary<K,V> newDict = new MyDictionary<>();
+
+        for(K key : fileTable.keySet()) {
+            newDict.put(key, fileTable.get(key));
+        }
+        return newDict;
+    }
 }

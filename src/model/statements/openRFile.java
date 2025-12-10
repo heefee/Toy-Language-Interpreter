@@ -33,7 +33,7 @@ public class openRFile implements IStmt{
             throw new MyException(e.getMessage());
         }
 
-        return state;
+        return null;
     }
 
     @Override

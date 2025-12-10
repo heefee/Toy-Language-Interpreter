@@ -7,7 +7,7 @@ import model.adt.IMyStack;
 public class CompStmt implements IStmt{
     private IStmt first;
     private IStmt second;
-
+    //aa
     public CompStmt(IStmt first, IStmt second){
         this.first = first;
         this.second = second;
@@ -23,7 +23,7 @@ public class CompStmt implements IStmt{
         IMyStack<IStmt> stk = state.getExeStack();
         stk.push(second);
         stk.push(first);
-        return state;
+        return null;
     }
 
     @Override

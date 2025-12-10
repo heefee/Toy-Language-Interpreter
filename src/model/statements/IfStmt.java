@@ -12,7 +12,7 @@ public class IfStmt implements IStmt{
     private IExp exp;
     private IStmt thenS;
     private IStmt elseS;
-
+    //aa
     public IfStmt(IExp exp, IStmt thenS, IStmt elseS){
         this.exp = exp;
         this.thenS = thenS;
@@ -37,7 +37,7 @@ public class IfStmt implements IStmt{
             throw new MyException("Conditional expression is not boolean");
         }
 
-        return state;
+        return null;
     }
 
     @Override

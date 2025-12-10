@@ -41,4 +41,14 @@ public class MyDictionary<K,V> implements IMyDictionary<K,V> {
     public Map<K, V> getContent(){
         return (Map<K, V>) dict;
     }
+
+    @Override
+    public IMyDictionary<K,V> deepCopy() {
+        IMyDictionary<K,V> newDict = new MyDictionary<>();
+
+        for(K key : dict.keySet()) {
+            newDict.put(key, dict.get(key));
+        }
+        return newDict;
+    }
 }

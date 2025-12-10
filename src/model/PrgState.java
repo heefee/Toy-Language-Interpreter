@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.MyException;
 import model.adt.*;
 import model.statements.IStmt;
 import model.values.IValue;
@@ -11,13 +12,15 @@ public class PrgState {
     private IMyStack<IStmt> exeStack;
     private IMyDictionary<String, IValue> symTable;
     private IMyList<IValue> out;
-
+    private int currentId;
+    static int nextId = 0;
     private IMyDictionary<StringValue, BufferedReader> filetable;
     private IMyHeap heap;
 
     private IStmt originalProgram;
 
-    public PrgState(IMyStack<IStmt> stk, IMyDictionary<String, IValue> symtbl, IMyList<IValue> ot,IMyDictionary<StringValue, BufferedReader> filetable, IMyHeap heap, IStmt prg){
+    public PrgState(int givenId, IMyStack<IStmt> stk, IMyDictionary<String, IValue> symtbl, IMyList<IValue> ot,IMyDictionary<StringValue, BufferedReader> filetable, IMyHeap heap, IStmt prg){
+        this.currentId = givenId;
         this.exeStack = stk;
         this.out = ot;
         this.symTable = symtbl;
@@ -25,8 +28,22 @@ public class PrgState {
         stk.push(prg);
         this.filetable = filetable;
         this.heap = heap;
+        this.currentId = getNextId();
     }
 
+    public static synchronized int getNextId() {
+        return ++nextId;
+    }
+
+    public PrgState oneStep() throws MyException {
+        if (this.exeStack.isEmpty()) throw new MyException("prgstate stack is empty");
+        IStmt crtStmt = this.exeStack.pop();
+        return crtStmt.execute(this);
+    }
+
+    public boolean isNotCompleted() {
+        return !this.exeStack.isEmpty();
+    }
 
     public IMyDictionary<StringValue,BufferedReader> getFiletable(){
         return this.filetable;
@@ -57,6 +74,6 @@ public class PrgState {
 
     @Override
     public String toString() {
-        return "ExeStack: " + exeStack + "\n" + "SymTable: " + symTable + "\n"+"Out: " + out + "\n"+"FileTable: " + filetable.toString()+"\n" +"Heap: " + heap.toString() + "\n";
+        return "ID: " + this.currentId + "\n" + "ExeStack: " + exeStack + "\n" + "SymTable: " + symTable + "\n"+"Out: " + out + "\n"+"FileTable: " + filetable.toString()+"\n" +"Heap: " + heap.toString() + "\n";
     }
 }

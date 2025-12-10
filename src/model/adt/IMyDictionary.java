@@ -11,4 +11,5 @@ public interface IMyDictionary<K,V> {
     V getValue(K key);
     void remove(K key);
     Map<K, V> getContent();
+    IMyDictionary<K,V> deepCopy();
 }

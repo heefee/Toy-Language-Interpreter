@@ -40,7 +40,7 @@ public class wH implements IStmt{           //Heap Writing
 
         heap.update(refValue.getAddress(),evalExp);
 
-        return state;
+        return null;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class NewStmt implements IStmt{                  //Heap Allocation
         Integer newPos = heap.add(evalExp);
         symTable.put(var_name, new RefValue((Integer) heap.getLastKey(),locationType));
 
-        return state;
+        return null;
     }
 
     @Override

@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface IRepository {
     void addPrgState(PrgState newState);
-    PrgState getCrtPrg();
+    //PrgState getCrtPrg();
     List<PrgState> getPrgList();
-    void logPrgStateExec() throws IOException;
+    void logPrgStateExec(PrgState prg) throws IOException;
     void logFinalLine() throws IOException;
+    void setPrgList(List<PrgState> givenPrg);
 }

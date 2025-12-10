@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Repository implements IRepository {
-    private final List<PrgState> prgStates;
+    private List<PrgState> prgStates;
     private String logFilePath;
 
 
@@ -22,7 +22,7 @@ public class Repository implements IRepository {
     public void addPrgState(PrgState state) {
         this.prgStates.add(state);
     }
-
+/*
     @Override
     public PrgState getCrtPrg() {
         if(this.prgStates.isEmpty()) {
@@ -30,7 +30,7 @@ public class Repository implements IRepository {
         }
         return this.prgStates.get(0);
     }
-
+*/
     @Override
     public List<PrgState> getPrgList() {
         return this.prgStates;
@@ -41,10 +41,10 @@ public class Repository implements IRepository {
     }
 
     @Override
-    public void logPrgStateExec() throws IOException {
+    public void logPrgStateExec(PrgState prg) throws IOException {
         PrintWriter logFile;
         logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath,true)));
-        logFile.println(getCrtPrg().toString());
+        logFile.println(prg.toString());
         logFile.close();
     }
 
@@ -53,5 +53,10 @@ public class Repository implements IRepository {
         logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath,true)));
         logFile.println("--------------------------------------------");
         logFile.close();
+    }
+
+    @Override
+    public void setPrgList(List<PrgState> givenPrg) {
+        prgStates = givenPrg;
     }
 }

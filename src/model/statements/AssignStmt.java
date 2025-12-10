@@ -34,7 +34,7 @@ public class AssignStmt implements IStmt{
             throw new MyException("Type mismatch in assignment to '" + this.id + "' expected " + typeId.toString() + " but got " + value.getType().toString());
         }
         symTable.put(this.id, value);
-        return state;
+        return null;
     }
 
     @Override

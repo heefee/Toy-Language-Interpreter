@@ -18,6 +18,7 @@ import repository.Repository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Dictionary;
 
 class Interpreter {
 
@@ -141,23 +142,51 @@ class Interpreter {
                 new NewStmt("v", new ValueExp(new IntValue(30))),
                 new PrintStmt(new rH(new rH(new VarExp("a")))))))));
 
-        PrgState prg1 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex1);
-        PrgState prg2 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex2);
-        PrgState prg3 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex3);
-        PrgState prg4 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex4);
-        PrgState prg5 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex5);
-        PrgState prg6 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex6);
-        PrgState prg7 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex7);
-        PrgState prg8 = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex8);
+        //      Example:
+//        int v;
+//        Ref int a;
+//        v=10;
+//        new(a,22);
+//        fork(wH(a,30);v=32;print(v);print(rH(a)));
+//        print(v);
+//        print(rH(a))
+//      At the end:
+//        Id=1
+//        SymTable_1={v->10,a->(1,int)}
+//        Id=10
+//        SymTable_10={v->32,a->(1,int)}
+//        Heap={1->30}
+//        Out={10,30,32,30}
+
+        IStmt ex9 = new CompStmt(new VarDeclStmt("v", new IntType()), new CompStmt(
+                new VarDeclStmt("a", new RefType(new IntType())), new CompStmt(
+                new AssignStmt("v", new ValueExp(new IntValue(10))), new CompStmt(
+                new NewStmt("a", new ValueExp(new IntValue(22))), new CompStmt(
+                new ForkStmt(new CompStmt(new wH("a", new ValueExp(new IntValue(30))), new CompStmt(
+                        new AssignStmt("v", new ValueExp(new IntValue(32))), new CompStmt(
+                        new PrintStmt(new VarExp("v")), new PrintStmt(new rH(new VarExp("a")))))
+                )), new CompStmt(new PrintStmt(new VarExp("v")), new PrintStmt(new rH(new VarExp("a"))))
+        )))));
+
+        PrgState prg1 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex1);
+        PrgState prg2 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex2);
+        PrgState prg3 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex3);
+        PrgState prg4 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex4);
+        PrgState prg5 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex5);
+        PrgState prg6 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex6);
+        PrgState prg7 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex7);
+        PrgState prg8 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex8);
+        PrgState prg9 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex9);
 
         Repository rep1 = new Repository(prg1,"logs/logFile1.txt");
         Repository rep2 = new Repository(prg2,"logs/logFile2.txt");
-        Repository rep3 = new Repository(prg3, "logs/logFile3.txt");
+        Repository rep3 = new Repository(prg3,"logs/logFile3.txt");
         Repository rep4 = new Repository(prg4,"logs/logFile4.txt");
         Repository rep5 = new Repository(prg5,"logs/logFile5.txt");
         Repository rep6 = new Repository(prg6,"logs/logFile6.txt");
         Repository rep7 = new Repository(prg7,"logs/logFile7.txt");
         Repository rep8 = new Repository(prg8,"logs/logFile8.txt");
+        Repository rep9 = new Repository(prg9,"logs/logFile9.txt");
 
         Controller ctr1 = new Controller(rep1);
         Controller ctr2 = new Controller(rep2);
@@ -167,6 +196,7 @@ class Interpreter {
         Controller ctr6 = new Controller(rep6);
         Controller ctr7 = new Controller(rep7);
         Controller ctr8 = new Controller(rep8);
+        Controller ctr9 = new Controller(rep9);
 
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));
@@ -178,6 +208,7 @@ class Interpreter {
         menu.addCommand(new RunExample("6", ex6.toString(),ctr6));
         menu.addCommand(new RunExample("7", ex7.toString(),ctr7));
         menu.addCommand(new RunExample("8", ex8.toString(),ctr8));
+        menu.addCommand(new RunExample("9", ex9.toString(),ctr9));
         menu.show();
     }
 }
