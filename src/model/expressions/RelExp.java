@@ -3,6 +3,8 @@ package model.expressions;
 import exceptions.MyException;
 import model.adt.IMyDictionary;
 import model.adt.IMyHeap;
+import model.types.BoolType;
+import model.types.IType;
 import model.types.IntType;
 import model.values.BoolValue;
 import model.values.IValue;
@@ -68,5 +70,21 @@ public class RelExp implements IExp{
     @Override
     public String toString(){
         return "RelExp(" + e1 + op + e2 + ")";
+    }
+
+    public IType typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType type1,type2;
+        type1=e1.typecheck(typeEnv);
+        type2=e2.typecheck(typeEnv);
+
+        if(type1.equals(new IntType())){
+            if(type2.equals(new IntType()))
+                return new BoolType();
+            else
+                throw new MyException("second operand is not an integer");
+        }
+        else{
+            throw new MyException("first operand is not an integer");
+        }
     }
 }

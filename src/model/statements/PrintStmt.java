@@ -2,8 +2,10 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
+import model.adt.IMyDictionary;
 import model.adt.IMyList;
 import model.expressions.IExp;
+import model.types.IType;
 import model.values.IValue;
 
 import static java.lang.IO.print;
@@ -31,5 +33,11 @@ public class PrintStmt implements IStmt{
     @Override
     public String toString(){
         return "Print " + exp.toString();
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        exp.typecheck(typeEnv);
+        return typeEnv;
     }
 }

@@ -1,5 +1,6 @@
 package model.adt;
 
+import model.types.IType;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
@@ -12,4 +13,5 @@ public interface IMyDictionary<K,V> {
     void remove(K key);
     Map<K, V> getContent();
     IMyDictionary<K,V> deepCopy();
+    V getType(K key);
 }

@@ -1,5 +1,7 @@
 package model.adt;
 
+import model.types.IType;
+import model.values.IValue;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
@@ -51,5 +53,10 @@ public class MyFileTable<K,V> implements IMyDictionary<K,V> {
             newDict.put(key, fileTable.get(key));
         }
         return newDict;
+    }
+
+
+    public V getType(K key) {
+        return fileTable.get(key);
     }
 }

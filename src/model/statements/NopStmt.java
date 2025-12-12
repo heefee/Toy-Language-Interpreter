@@ -2,6 +2,8 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
+import model.adt.IMyDictionary;
+import model.types.IType;
 
 public class NopStmt implements IStmt{
     @Override
@@ -17,5 +19,10 @@ public class NopStmt implements IStmt{
     @Override
     public String toString(){
         return "\n";
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        return typeEnv;
     }
 }

@@ -51,4 +51,12 @@ public class NewStmt implements IStmt{                  //Heap Allocation
     public String toString(){
         return "new(" + var_name + "," + exp.toString() + ")";
     }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType typevar = typeEnv.getType(var_name);
+        IType typeexp = exp.typecheck(typeEnv);
+        if(typevar.equals(new RefType(typeexp))) return typeEnv;
+        else throw new MyException("NEW stmt: right hand side and left hand side have different types");
+    }
 }

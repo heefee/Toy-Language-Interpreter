@@ -4,6 +4,7 @@ import exceptions.MyException;
 import model.PrgState;
 import model.adt.IMyDictionary;
 import model.expressions.IExp;
+import model.types.IType;
 import model.types.StringType;
 import model.values.IValue;
 import model.values.StringValue;
@@ -51,5 +52,11 @@ public class closeRFile implements IStmt{
     @Override
     public String toString(){
         return "closeRFile " + exp.toString() + ")";
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        exp.typecheck(typeEnv);
+        return typeEnv;
     }
 }

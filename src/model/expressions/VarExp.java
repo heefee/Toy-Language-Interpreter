@@ -1,7 +1,9 @@
 package model.expressions;
 
+import exceptions.MyException;
 import model.adt.IMyDictionary;
 import model.adt.IMyHeap;
+import model.types.IType;
 import model.values.IValue;
 
 public class VarExp implements IExp{
@@ -25,4 +27,7 @@ public class VarExp implements IExp{
         return id;
     }
 
+    public IType typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        return typeEnv.getType(id);
+    }
 }

@@ -5,16 +5,15 @@ import model.PrgState;
 import model.adt.*;
 import model.expressions.*;
 import model.statements.*;
-import model.types.BoolType;
-import model.types.IntType;
-import model.types.RefType;
-import model.types.StringType;
+import model.types.*;
 import model.values.BoolValue;
 import model.values.IValue;
 import model.values.IntValue;
 import model.values.StringValue;
 import repository.IRepository;
 import repository.Repository;
+import model.expressions.IExp;
+import model.statements.IStmt;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,7 +22,6 @@ import java.util.Dictionary;
 class Interpreter {
 
     public static void main(String[] args) throws IOException {
-
         IStmt ex1 = new CompStmt(
                 new VarDeclStmt("v", new IntType()),
                 new CompStmt(
@@ -168,47 +166,109 @@ class Interpreter {
                 )), new CompStmt(new PrintStmt(new VarExp("v")), new PrintStmt(new rH(new VarExp("a"))))
         )))));
 
-        PrgState prg1 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex1);
-        PrgState prg2 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex2);
-        PrgState prg3 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex3);
-        PrgState prg4 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex4);
-        PrgState prg5 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex5);
-        PrgState prg6 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex6);
-        PrgState prg7 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex7);
-        PrgState prg8 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex8);
-        PrgState prg9 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex9);
-
-        Repository rep1 = new Repository(prg1,"logs/logFile1.txt");
-        Repository rep2 = new Repository(prg2,"logs/logFile2.txt");
-        Repository rep3 = new Repository(prg3,"logs/logFile3.txt");
-        Repository rep4 = new Repository(prg4,"logs/logFile4.txt");
-        Repository rep5 = new Repository(prg5,"logs/logFile5.txt");
-        Repository rep6 = new Repository(prg6,"logs/logFile6.txt");
-        Repository rep7 = new Repository(prg7,"logs/logFile7.txt");
-        Repository rep8 = new Repository(prg8,"logs/logFile8.txt");
-        Repository rep9 = new Repository(prg9,"logs/logFile9.txt");
-
-        Controller ctr1 = new Controller(rep1);
-        Controller ctr2 = new Controller(rep2);
-        Controller ctr3 = new Controller(rep3);
-        Controller ctr4 = new Controller(rep4);
-        Controller ctr5 = new Controller(rep5);
-        Controller ctr6 = new Controller(rep6);
-        Controller ctr7 = new Controller(rep7);
-        Controller ctr8 = new Controller(rep8);
-        Controller ctr9 = new Controller(rep9);
 
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));
-        menu.addCommand(new RunExample("1", ex1.toString(), ctr1));
-        menu.addCommand(new RunExample("2", ex2.toString(), ctr2));
-        menu.addCommand(new RunExample("3", ex3.toString(), ctr3));
-        menu.addCommand(new RunExample("4", ex4.toString(),ctr4));
-        menu.addCommand(new RunExample("5", ex5.toString(),ctr5));
-        menu.addCommand(new RunExample("6", ex6.toString(),ctr6));
-        menu.addCommand(new RunExample("7", ex7.toString(),ctr7));
-        menu.addCommand(new RunExample("8", ex8.toString(),ctr8));
-        menu.addCommand(new RunExample("9", ex9.toString(),ctr9));
+        MyDictionary typeEnv1 = new MyDictionary();
+        try{
+            ex1.typecheck(typeEnv1);
+            PrgState prg1 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex1);
+            Repository rep1 = new Repository(prg1,"logs/logFile1.txt");
+            Controller ctr1 = new Controller(rep1);
+            menu.addCommand(new RunExample("1", ex1.toString(), ctr1));
+        } catch (Exception e){
+            System.out.println("Program 1 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv2 = new MyDictionary();
+        try{
+            ex2.typecheck(typeEnv2);
+            PrgState prg2 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex2);
+            Repository rep2 = new Repository(prg2,"logs/logFile2.txt");
+            Controller ctr2 = new Controller(rep2);
+            menu.addCommand(new RunExample("2", ex2.toString(), ctr2));
+        } catch (Exception e){
+            System.out.println("Program 2 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv3 = new MyDictionary();
+        try{
+            ex3.typecheck(typeEnv3);
+            PrgState prg3 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex3);
+            Repository rep3 = new Repository(prg3,"logs/logFile3.txt");
+            Controller ctr3 = new Controller(rep3);
+            menu.addCommand(new RunExample("3", ex3.toString(), ctr3));
+        } catch (Exception e){
+            System.out.println("Program 3 didn't pass the type checker: " + e.getMessage());
+        }
+
+
+        MyDictionary typeEnv4 = new MyDictionary();
+        try {
+            ex4.typecheck(typeEnv4);
+            PrgState prg4 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex4);
+            Repository rep4 = new Repository(prg4, "logs/logFile4.txt");
+            Controller ctr4 = new Controller(rep4);
+            menu.addCommand(new RunExample("4", ex4.toString(), ctr4));
+        } catch (Exception e) {
+            System.out.println("Program 4 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv5 = new MyDictionary();
+        try {
+            ex5.typecheck(typeEnv5);
+            PrgState prg5 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex5);
+            Repository rep5 = new Repository(prg5, "logs/logFile5.txt");
+            Controller ctr5 = new Controller(rep5);
+            menu.addCommand(new RunExample("5", ex5.toString(), ctr5));
+        } catch (Exception e) {
+            System.out.println("Program 5 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv6 = new MyDictionary();
+        try {
+            ex6.typecheck(typeEnv6);
+            PrgState prg6 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex6);
+            Repository rep6 = new Repository(prg6, "logs/logFile6.txt");
+            Controller ctr6 = new Controller(rep6);
+            menu.addCommand(new RunExample("6", ex6.toString(), ctr6));
+        } catch (Exception e) {
+            System.out.println("Program 6 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv7 = new MyDictionary();
+        try {
+            ex7.typecheck(typeEnv7);
+            PrgState prg7 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex7);
+            Repository rep7 = new Repository(prg7, "logs/logFile7.txt");
+            Controller ctr7 = new Controller(rep7);
+            menu.addCommand(new RunExample("7", ex7.toString(), ctr7));
+        } catch (Exception e) {
+            System.out.println("Program 7 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv8 = new MyDictionary();
+        try {
+            ex8.typecheck(typeEnv8);
+            PrgState prg8 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex8);
+            Repository rep8 = new Repository(prg8, "logs/logFile8.txt");
+            Controller ctr8 = new Controller(rep8);
+            menu.addCommand(new RunExample("8", ex8.toString(), ctr8));
+        } catch (Exception e) {
+            System.out.println("Program 8 didn't pass the type checker: " + e.getMessage());
+        }
+
+        MyDictionary typeEnv9 = new MyDictionary();
+        try {
+            ex9.typecheck(typeEnv9);
+            PrgState prg9 = new PrgState(PrgState.getNextId(), new MyStack<>(), new MyDictionary<>(), new MyList<>(), new MyFileTable(), new MyHeap(), ex9);
+            Repository rep9 = new Repository(prg9, "logs/logFile9.txt");
+            Controller ctr9 = new Controller(rep9);
+            menu.addCommand(new RunExample("9", ex9.toString(), ctr9));
+        } catch (Exception e) {
+            System.out.println("Program 9 didn't pass the type checker: " + e.getMessage());
+        }
+
         menu.show();
     }
 }

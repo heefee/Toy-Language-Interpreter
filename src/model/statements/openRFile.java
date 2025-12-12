@@ -2,7 +2,10 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
+import model.adt.IMyDictionary;
 import model.expressions.IExp;
+import model.types.IType;
+import model.types.RefType;
 import model.types.StringType;
 import model.values.IValue;
 import model.values.StringValue;
@@ -44,5 +47,12 @@ public class openRFile implements IStmt{
     @Override
     public String toString(){
         return "openRFile " + exp.toString() + ")";
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType typeexp = exp.typecheck(typeEnv);
+        if(typeexp.equals(new StringType())) return typeEnv;
+        else throw new MyException("openRFile STMT : exp not of String Type");
     }
 }

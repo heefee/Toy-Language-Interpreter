@@ -2,7 +2,11 @@ package model.statements;
 
 import exceptions.MyException;
 import model.PrgState;
+import model.adt.IMyDictionary;
 import model.expressions.IExp;
+import model.types.BoolType;
+import model.types.IType;
+import model.types.StringType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -36,5 +40,15 @@ public class WhileStmt implements IStmt{
 
     public String toString() {
         return "while(" + exp.toString() + ")" + stmt.toString();
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType typeexp = exp.typecheck(typeEnv);
+        if (typeexp.equals(new BoolType())) {
+            stmt.typecheck(typeEnv.deepCopy());
+            return typeEnv;
+        } else
+            throw new MyException("WHILE: The condition of While doesnt have the right exp");
     }
 }

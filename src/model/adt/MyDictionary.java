@@ -1,5 +1,9 @@
 package model.adt;
 
+import exceptions.MyException;
+import model.types.IType;
+import model.values.IValue;
+import model.values.IntValue;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
@@ -50,5 +54,9 @@ public class MyDictionary<K,V> implements IMyDictionary<K,V> {
             newDict.put(key, dict.get(key));
         }
         return newDict;
+    }
+
+    public V getType(K key) {
+        return dict.get(key);
     }
 }

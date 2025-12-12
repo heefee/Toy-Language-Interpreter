@@ -6,7 +6,9 @@ import model.adt.IMyDictionary;
 import model.adt.IMyHeap;
 import model.expressions.IExp;
 import model.types.IType;
+import model.types.IntType;
 import model.types.RefType;
+import model.types.StringType;
 import model.values.IValue;
 import model.values.RefValue;
 
@@ -51,5 +53,15 @@ public class wH implements IStmt{           //Heap Writing
     @Override
     public String toString(){
         return "wH(" + var_name + "," + exp.toString() + ")";
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType typevar = typeEnv.getType(var_name);
+        IType typeexp = exp.typecheck(typeEnv);
+        if(typevar.equals(new RefType(typeexp)))
+            return typeEnv;
+        else
+            throw new MyException("Heap Write error: variable exp not STRING");
     }
 }

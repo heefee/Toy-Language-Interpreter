@@ -4,6 +4,8 @@ import exceptions.MyException;
 import model.adt.IMyDictionary;
 import model.adt.IMyHeap;
 import model.types.BoolType;
+import model.types.IType;
+import model.types.IntType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -42,5 +44,21 @@ public class LogicExp implements IExp{
     @Override
     public IExp deepCopy(){
         return new LogicExp(e1.deepCopy(),e2.deepCopy(),op);
+    }
+
+    public IType typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType type1,type2;
+        type1=e1.typecheck(typeEnv);
+        type2=e2.typecheck(typeEnv);
+
+        if(type1.equals(new BoolType())){
+            if(type2.equals(new BoolType()))
+                return new BoolType();
+            else
+                throw new MyException("second operand is not an integer");
+        }
+        else{
+            throw new MyException("first operand is not an integer");
+        }
     }
 }

@@ -5,6 +5,7 @@ import model.PrgState;
 import model.adt.IMyDictionary;
 import model.expressions.IExp;
 import model.types.BoolType;
+import model.types.IType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -43,5 +44,17 @@ public class IfStmt implements IStmt{
     @Override
     public String toString(){
         return "IF (" + exp.toString() + ") THEN (" + thenS.toString() + ") ELSE (" + elseS.toString()+"))";
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType typeexp = exp.typecheck(typeEnv);
+        if(typeexp.equals(new BoolType())){
+            thenS.typecheck(typeEnv.deepCopy());
+            elseS.typecheck(typeEnv.deepCopy());
+            return typeEnv;
+        }
+        else
+            throw new MyException("The condition of IF has not the type bool");
     }
 }

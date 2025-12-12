@@ -4,6 +4,7 @@ import exceptions.MyException;
 import model.PrgState;
 import model.adt.IMyDictionary;
 import model.expressions.IExp;
+import model.types.IType;
 import model.types.IntType;
 import model.types.StringType;
 import model.values.IValue;
@@ -69,5 +70,17 @@ public class readFile implements IStmt{
     @Override
     public String toString(){
         return "readFile " + varName + ", " + exp.toString() + ")";
+    }
+
+    @Override
+    public IMyDictionary<String, IType> typecheck(IMyDictionary<String, IType> typeEnv) throws MyException {
+        IType typevar = typeEnv.getType(varName);
+        IType typeexp = exp.typecheck(typeEnv);
+        if(typevar.equals(new IntType())){
+            if(typeexp.equals(new StringType()))
+                return typeEnv;
+            else throw new MyException("readFile error: variable exp not STRING");
+        }
+        else throw new MyException("readFile error: variable name not INT");
     }
 }

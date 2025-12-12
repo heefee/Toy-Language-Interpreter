@@ -3,12 +3,13 @@ package model.expressions;
 import exceptions.MyException;
 import model.adt.IMyDictionary;
 import model.adt.IMyHeap;
+import model.types.IType;
 import model.types.RefType;
 import model.values.IValue;
 import model.values.RefValue;
 
 public class rH implements IExp{        //Heap Reading
-    private IExp exp;
+    private final IExp exp;
 
     public rH(IExp exp){
         this.exp = exp;
@@ -33,4 +34,15 @@ public class rH implements IExp{        //Heap Reading
     public String toString(){
         return "rh(" + exp.toString() + ")";
     }
+
+    @Override
+    public IType typecheck(IMyDictionary<String, IType> typeEnv) throws MyException{
+        IType type=exp.typecheck(typeEnv);
+        if (type instanceof RefType) {
+            RefType reft =(RefType) type;
+            return reft.getInner();
+        } else
+            throw new MyException("the rH argument is not a Ref Type");
+    }
+
 }
