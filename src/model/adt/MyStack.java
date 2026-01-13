@@ -1,4 +1,6 @@
 package model.adt;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class MyStack <T> implements IMyStack<T> {
@@ -20,6 +22,11 @@ public class MyStack <T> implements IMyStack<T> {
     @Override
     public boolean isEmpty() {
         return this.tail.isEmpty();
+    }
+
+    @Override
+    public List<T> toList() {
+        return new ArrayList<>(tail);
     }
 
     @Override

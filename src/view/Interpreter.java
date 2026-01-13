@@ -7,21 +7,18 @@ import model.expressions.*;
 import model.statements.*;
 import model.types.*;
 import model.values.BoolValue;
-import model.values.IValue;
 import model.values.IntValue;
 import model.values.StringValue;
-import repository.IRepository;
 import repository.Repository;
 import model.expressions.IExp;
 import model.statements.IStmt;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Dictionary;
+import java.lang.reflect.Array;
 
 class Interpreter {
 
-    public static void main(String[] args) throws IOException {
+    static void main() {
+
         IStmt ex1 = new CompStmt(
                 new VarDeclStmt("v", new IntType()),
                 new CompStmt(

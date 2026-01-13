@@ -31,6 +31,10 @@ public class PrgState {
         this.currentId = getNextId();
     }
 
+    public int getId(){
+        return currentId;
+    }
+
     public static synchronized int getNextId() {
         return ++nextId;
     }

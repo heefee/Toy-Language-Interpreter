@@ -19,4 +19,9 @@ public class MyList<V> implements IMyList<V> {
     public String toString(){
         return list.toString();
     }
+
+    @Override
+    public List<V> getAll(){
+        return new ArrayList<>(list);
+    }
 }

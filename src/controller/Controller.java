@@ -30,6 +30,10 @@ public class Controller {
         this.statesRepo = statesRepo;
     }
 
+    public List<PrgState> getPrgList(){
+        return statesRepo.getPrgList();
+    }
+
     public List<PrgState> removeCompletedPrg(List<PrgState> inPrgList){
         return inPrgList.stream()
                 .filter(p -> p.isNotCompleted())
@@ -138,6 +142,44 @@ public class Controller {
         executor.shutdownNow();
         statesRepo.setPrgList(prgList);
         statesRepo.logFinalLine();
+    }
+
+    public void oneStepForAllPrgGUI() throws MyException {
+        if (executor == null || executor.isShutdown()) {
+            executor = Executors.newFixedThreadPool(2);
+        }
+
+        List<PrgState> prgList = removeCompletedPrg(statesRepo.getPrgList());
+
+        if (prgList.isEmpty()) {
+            executor.shutdownNow();
+            return;
+        }
+
+        // Garbage collection
+        Set<Integer> symTblAddr = new HashSet<>();
+        for (PrgState prg : prgList) {
+            symTblAddr.addAll(getAddrFromSymTable(prg.getSymTable().getContent().values()));
+        }
+
+        prgList.forEach(prgState -> {
+            IMyHeap<Integer, IValue> heap = prgState.getHeap();
+            heap.setContent(
+                    safeGarbageCollector(
+                            symTblAddr,
+                            getAddrFromHeap(heap),
+                            (HashMap<Integer, IValue>) heap.getContent()
+                    )
+            );
+        });
+
+        oneStepForAllPrg(prgList);
+    }
+
+    public void shutdownExecutor() {
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdownNow();
+        }
     }
 
 }
