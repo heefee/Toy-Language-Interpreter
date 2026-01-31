@@ -24,6 +24,7 @@ import repository.Repository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -193,6 +194,32 @@ public class GUI extends Application {
                 )), new CompStmt(new PrintStmt(new VarExp("v")), new PrintStmt(new rH(new VarExp("a"))))
         )))));
 
+        IStmt ex10 =
+                new CompStmt(
+                  new VarDeclStmt("a", new RefType(new IntType())),
+                        new CompStmt(
+                                new NewStmt("a",new ValueExp(new IntValue(20))),
+                                new CompStmt(
+                                        new VarDeclStmt("v",new IntType()),
+                                        new CompStmt(
+                                                new ForStmt(
+                                                        new AssignStmt("v",new ValueExp(new IntValue(0))),
+                                                        new RelExp(new VarExp("v"),new ValueExp(new IntValue(3)),1),
+                                                        new AssignStmt("v", new ArithExp(new VarExp("v"),new ValueExp(new IntValue(1)),1)),
+                                                        new ForkStmt(
+                                                                new CompStmt(
+                                                                        new PrintStmt(new VarExp("v")),
+                                                                        new AssignStmt("v",
+                                                                                new ArithExp(new VarExp("v"), new rH(new VarExp("a")), 3))
+                                                                )
+                                                        )
+                                                ),
+                                                new PrintStmt(new rH(new VarExp("a")))
+                                        )
+                                )
+                        )
+                );
+
         examples.add(ex1);
         examples.add(ex2);
         examples.add(ex3);
@@ -202,6 +229,7 @@ public class GUI extends Application {
         examples.add(ex7);
         examples.add(ex8);
         examples.add(ex9);
+        examples.add(ex10);
 
         return FXCollections.observableArrayList(examples);
     }
